@@ -24,25 +24,31 @@ function playRound(humanChoice,computerChoice) {
     }              
 }
 
+function resetGame() {
+    humanScore = 0;
+    computerScore = 0;
+    score.innerHTML = `5-Round Match<br>Score: ${humanScore} (You) - ${computerScore} (Computer)`;
+    const rockButton = document.createElement('button');
+    const paperButton = document.createElement('button');
+    const scissorsButton = document.createElement('button');
+    rockButton.setAttribute('id', 'rock');
+    paperButton.setAttribute('id', 'paper');
+    scissorsButton.setAttribute('id', 'scissors');
+    const buttons = [rockButton, paperButton, scissorsButton];
+    buttons.forEach(button => {
+        choices.appendChild(button);
+        button.textContent = button.id[0].toUpperCase() + button.id.slice(1);
+    });
+    results.replaceChildren();
+}
+
 let humanScore = 0;
 let computerScore = 0;
 let computerSelection = '';
 const score = document.querySelector('#score');
 const choices = document.querySelector('#button-wrapper');
 const results = document.querySelector('#result-wrapper');
-const rockButton = document.createElement('button');
-const paperButton = document.createElement('button');
-const scissorsButton = document.createElement('button');
-rockButton.setAttribute('id', 'rock');
-paperButton.setAttribute('id', 'paper');
-scissorsButton.setAttribute('id', 'scissors');
-buttons = [rockButton, paperButton, scissorsButton];
-buttons.forEach(button => {
-    choices.appendChild(button);
-    button.textContent = button.id[0].toUpperCase() + button.id.slice(1);
-});
-score.innerHTML = `5-Round Match<br>Score: ${humanScore} (You) - ${computerScore} (Computer)`;
-
+resetGame();
 
 choices.addEventListener('click', (event) => {
     computerSelection = getComputerChoice();
@@ -59,5 +65,17 @@ choices.addEventListener('click', (event) => {
         } else {
             gameResult.textContent = 'Sorry, you are lose.';
         }   
+        questionToRepeat.textContent = 'Do you want to repeat the game?'
+        const yesButton = document.createElement('button');
+        const noButton = document.createElement('button');
+        yesButton.setAttribute('id', 'yes');
+        noButton.setAttribute('id', 'no');
+        const choiceButtons = [yesButton, noButton];
+        choiceButtons.forEach(button => {
+            results.appendChild(button);
+            button.textContent = button.id[0].toUpperCase() + button.id.slice(1);
+        });
+        yesButton.addEventListener('click', () => resetGame()); 
+        noButton.addEventListener('click', () => results.replaceChildren());
     }
 });
